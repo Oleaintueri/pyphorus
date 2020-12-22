@@ -71,6 +71,6 @@ class PortScanner:
         loop.run_until_complete(_scan())
 
         if self._return_only_open:
-            return filter(lambda x: x.is_open is True, self._devices)
+            return list(filter(lambda x: x.is_open is True, self._devices))
 
         return self._devices

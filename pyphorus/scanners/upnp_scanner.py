@@ -11,11 +11,15 @@ from pyphorus.devices import Device
 
 class UPnP:
 
-    def __init__(self, port: int = 1900):
+    def __init__(self, search_term: str = None, port: int = 1900):
+        if search_term is None:
+            search_term = "ssdp:all"
+            
         self._ssdp_client = ssdpy.SSDPClient(port=port)
+        self._search_term = search_term
 
     def scan(self) -> List[Device]:
-        responses = self._ssdp_client.m_search()
+        responses = self._ssdp_client.m_search(self._search_term)
 
         devices = []
 

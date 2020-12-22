@@ -1,9 +1,9 @@
 <h1 align="center">Pyphorus</h1>
 
 <p align="center">
-    <img alt="GitHub" src="https://img.shields.io/github/license/ReolinkCameraAPI/reolinkapipy?style=flat-square">
-    <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/ReolinkCameraAPI/reolinkapipy?style=flat-square">
-    <img alt="PyPI" src="https://img.shields.io/pypi/v/reolinkapi?style=flat-square">
+    <img alt="GitHub" src="https://img.shields.io/github/license/Oleaintueri/pyphorus?style=flat-square">
+    <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/Oleaintueri/pyphorus?style=flat-square">
+    <img alt="PyPI" src="https://img.shields.io/pypi/v/pyphorus?style=flat-square">
 </p>
 
 ---
