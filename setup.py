@@ -26,11 +26,11 @@ AUTHOR_EMAIL = 'alano@oleaintueri.com'
 AUTHOR = 'Benehiko'
 LICENSE = 'GPL-3.0'
 INSTALL_REQUIRES = [
-    'requests==2.25.1'
-    'nose==1.3.7'
-    'aiohttp==3.7.3'
-    'ssdpy==0.4.1'
-    'defusedxml==0.6.0'
+    'requests==2.25.1',
+    'nose==1.3.7',
+    'aiohttp==3.7.3',
+    'ssdpy==0.4.1',
+    'defusedxml==0.6.0',
     'setuptools==51.1.0'
 ]
 
