@@ -12,7 +12,7 @@ A small network library written in Python 3.
 
 Features:
  - Port scanner
- - UPnP client (SDDP)
+ - UPnP client (SSDP wrapper)
 
 Build with :heart: by 
 
@@ -33,4 +33,26 @@ Or
 
 ### Usage
 
+```python
+from pyphorus.pyphorus import Pyphorus
+
+if __name__ == "__main__":
+    phorus = Pyphorus()
+    devices = phorus.scan_ports("192.168.0.1", ports=[80, 443, 9000], only_open=True)
+    
+    for device in devices:
+        print(device.ip, device.port)
+    
+    devices = phorus.scan_upnp("ssdp:all")
+    
+    for device in devices:
+        print(device.ip, device.friendly_name, device.device_type)
+    
+```
+
+### Testing
+
+Pyphorus uses `nose` to run its tests and mock testing server.
+
+    nosetests -v
     

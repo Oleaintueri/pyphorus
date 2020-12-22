@@ -36,8 +36,6 @@ class TestPyphorus(object):
 
         device = list(filter(lambda x: x.is_open is True and x.port == 8000, devices))
 
-        print(device[0].port)
-
         assert_equal(len(device), 1)
 
         assert_equal(device[0].port, 8000)
