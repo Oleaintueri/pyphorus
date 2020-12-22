@@ -1,0 +1,65 @@
+import asyncio
+import ipaddress
+from typing import List
+
+import requests_threads
+
+from pyphorus.devices import Device
+
+
+class PortScanner:
+
+    def __init__(self, ip: str, ports: List[int] = None, timeout=2000):
+        """
+        Scan a the network for any open ports
+        :param ip: a singular ip address eg. "192.168.0.1" or a cidr "192.168.0.1/24"
+        :param ports: a list of ports. defaults are 80 and 443
+        """
+        if ports is None:
+            ports = [80, 443]
+
+        self._devices = []
+        self._timeout = timeout
+
+        if "/" in ip:
+            try:
+                ips = list(ipaddress.ip_network(ip).hosts())
+
+                for i in ips:
+                    for y in ports:
+                        self.devices.append(Device(i, y))
+
+            except ValueError:
+                raise ValueError("given ip address is not valid.")
+
+        else:
+            try:
+                ipAddr = ipaddress.ip_address(ip)
+
+                for y in ports:
+                    self.devices.append(Device(str(ipAddr), y))
+
+            except ValueError:
+                raise ValueError("given ip address is not valid.")
+
+        self.session = requests_threads.AsyncSession(n=len(self.devices))
+
+    async def _network_request(self, device) -> Device:
+        try:
+            reader, writer = await asyncio.wait_for(asyncio.open_connection(device.ip, device.port),
+                                                    timeout=(self._timeout / 1000))
+            writer.close()
+            await writer.wait_closed()
+            device.is_open = True
+        except:
+            device.is_open = False
+
+        return device
+
+    def scan(self) -> List[Device]:
+        tasks = []
+
+        for device in self._devices:
+            tasks.append(await asyncio.create_task(self._network_request(device)))
+
+        return asyncio.run(*tasks)
