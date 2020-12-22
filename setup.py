@@ -19,32 +19,27 @@ def find_version(*file_paths):
 
 
 # Package meta-data.
-NAME = 'reolinkapi'
-DESCRIPTION = 'Reolink Camera API client written in Python 3'
-URL = 'https://github.com/ReolinkCameraAPI/reolinkapipy'
-AUTHOR_EMAIL = 'alanoterblanche@gmail.com'
+NAME = 'pyphorus'
+DESCRIPTION = 'A network utility library written in Python 3'
+URL = 'https://github.com/Oleaintueri/pyphorus'
+AUTHOR_EMAIL = 'alano@oleaintueri.com'
 AUTHOR = 'Benehiko'
 LICENSE = 'GPL-3.0'
 INSTALL_REQUIRES = [
-    'numpy==1.19.4',
-    'opencv-python==4.4.0.46',
-    'Pillow==8.0.1',
-    'PySocks==1.7.1',
-    'PyYaml==5.3.1',
-    'requests>=2.18.4',
+    'ssdpy==0.4.1',
+    'defusedxml==0.6.0'
+    'aiohttp==3.7.3'
 ]
-
 
 here = os.path.abspath(os.path.dirname(__file__))
 # read the contents of your README file
 with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-
 setup(
     name=NAME,
     python_requires='>=3.6.0',
-    version=find_version('reolinkapi', '__init__.py'),
+    version=find_version('pyphorus', '__init__.py'),
     description=DESCRIPTION,
     long_description=long_description,
     long_description_content_type='text/markdown',

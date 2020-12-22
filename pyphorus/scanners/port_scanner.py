@@ -2,6 +2,7 @@ import asyncio
 import ipaddress
 from typing import List
 
+import aiohttp
 import requests_threads
 
 from pyphorus.devices import Device
@@ -9,7 +10,7 @@ from pyphorus.devices import Device
 
 class PortScanner:
 
-    def __init__(self, ip: str, ports: List[int] = None, timeout=2000):
+    def __init__(self, ip: str, ports: List[int] = None, timeout=2000, return_only_open=False):
         """
         Scan a the network for any open ports
         :param ip: a singular ip address eg. "192.168.0.1" or a cidr "192.168.0.1/24"
@@ -20,6 +21,7 @@ class PortScanner:
 
         self._devices = []
         self._timeout = timeout
+        self._return_only_open = return_only_open
 
         if "/" in ip:
             try:
@@ -27,7 +29,7 @@ class PortScanner:
 
                 for i in ips:
                     for y in ports:
-                        self.devices.append(Device(i, y))
+                        self._devices.append(Device(i, y))
 
             except ValueError:
                 raise ValueError("given ip address is not valid.")
@@ -37,12 +39,12 @@ class PortScanner:
                 ipAddr = ipaddress.ip_address(ip)
 
                 for y in ports:
-                    self.devices.append(Device(str(ipAddr), y))
+                    self._devices.append(Device(str(ipAddr), y))
 
             except ValueError:
                 raise ValueError("given ip address is not valid.")
 
-        self.session = requests_threads.AsyncSession(n=len(self.devices))
+        self.session = requests_threads.AsyncSession(n=len(self._devices))
 
     async def _network_request(self, device) -> Device:
         try:
@@ -59,7 +61,16 @@ class PortScanner:
     def scan(self) -> List[Device]:
         tasks = []
 
-        for device in self._devices:
-            tasks.append(await asyncio.create_task(self._network_request(device)))
+        async def _scan():
+            for device in self._devices:
+                tasks.append(self._network_request(device))
 
-        return asyncio.run(*tasks)
+            self._devices = await asyncio.gather(*tasks)
+
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(_scan())
+
+        if self._return_only_open:
+            return filter(lambda x: x.is_open is True, self._devices)
+
+        return self._devices
