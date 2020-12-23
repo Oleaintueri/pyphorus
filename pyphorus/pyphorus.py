@@ -1,8 +1,8 @@
 from typing import List
 
-from pyphorus.devices import Device
-from pyphorus.scanners.port_scanner import PortScanner
-from pyphorus.scanners.upnp_scanner import UPnP
+from pyphorus import Device
+from pyphorus.scanners import PortScanner
+from pyphorus.scanners import UPnP
 
 
 class Pyphorus:

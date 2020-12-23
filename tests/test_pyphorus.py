@@ -1,11 +1,10 @@
-import unittest
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
 
 import requests
 from nose.tools import assert_equal
 
-from pyphorus.pyphorus import Pyphorus
+import pyphorus
 
 
 class MockServerRequestHandler(BaseHTTPRequestHandler):
@@ -20,19 +19,23 @@ class TestPyphorus(object):
 
     @classmethod
     def setup_class(cls):
-        # Configure mock server.
-        cls.mock_server_port = 8000
-        cls.mock_server = HTTPServer(('127.0.0.1', cls.mock_server_port), MockServerRequestHandler)
+        # Configure mock servers.
 
-        # Start running mock server in a separate thread.
-        # Daemon threads automatically shut down when the main process exits.
-        cls.mock_server_thread = Thread(target=cls.mock_server.serve_forever)
-        cls.mock_server_thread.setDaemon(True)
-        cls.mock_server_thread.start()
+        ports = [8000, 9000, 9001]
+
+        for p in ports:
+            cls.mock_server_port = p
+            cls.mock_server = HTTPServer(('127.0.0.1', cls.mock_server_port), MockServerRequestHandler)
+
+            # Start running mock server in a separate thread.
+            # Daemon threads automatically shut down when the main process exits.
+            cls.mock_server_thread = Thread(target=cls.mock_server.serve_forever)
+            cls.mock_server_thread.setDaemon(True)
+            cls.mock_server_thread.start()
 
     def test_port_scanner(self):
-        phorus = Pyphorus()
-        devices = phorus.scan_ports(ip="127.0.0.1", ports=[90, 1000, 8000, 80])
+        phorus = pyphorus.Pyphorus()
+        devices = phorus.scan_ports(ip="127.0.0.1", ports=[90, 1000, 8000, 9000, 9001])
 
         device = list(filter(lambda x: x.is_open is True and x.port == 8000, devices))
 

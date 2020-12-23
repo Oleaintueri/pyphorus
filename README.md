@@ -34,10 +34,10 @@ Or
 ### Usage
 
 ```python
-from pyphorus.pyphorus import Pyphorus
+import pyphorus
 
 if __name__ == "__main__":
-    phorus = Pyphorus()
+    phorus = pyphorus.Pyphorus()
     devices = phorus.scan_ports("192.168.0.1", ports=[80, 443, 9000], only_open=True)
     
     for device in devices:
@@ -47,6 +47,10 @@ if __name__ == "__main__":
     
     for device in devices:
         print(device.ip, device.friendly_name, device.device_type)
+    
+    # if you want only the unique ips to remain and are not interested in the ports
+    unique_devices = pyphorus.utils.strip_duplicate_ips(devices)
+    
     
 ```
 

@@ -2,10 +2,9 @@ import asyncio
 import ipaddress
 from typing import List
 
-import aiohttp
 import requests_threads
 
-from pyphorus.devices import Device
+from pyphorus import Device
 
 
 class PortScanner:
