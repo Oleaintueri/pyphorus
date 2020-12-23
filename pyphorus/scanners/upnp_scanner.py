@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 
 import aiohttp
 import ssdpy
-from defusedxml.ElementTree import fromstring, parse, XMLParser
+from defusedxml.ElementTree import fromstring
 
 from pyphorus.devices import Device
 
@@ -54,7 +54,7 @@ class UPnP:
                                     device.device_type = dev.text
 
                                 if "friendlyName" in dev.tag:
-                                    device.device_type = dev.text
+                                    device.friendly_name = dev.text
 
                     if device.ip is not "":
                         device.is_open = True
